@@ -9,6 +9,11 @@ mongoose
 		{ useNewUrlParser: true })
 	.then(() => {
 		const app = express();
+		
+		app.get("/", async(req, res) => {
+			res.sendFile("index.html", {'root': './docs'});
+		});
+
 		app.use("/", route);
 
 		app.listen(port, () => {
