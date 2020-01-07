@@ -9,7 +9,7 @@ mongoose
 		{ useNewUrlParser: true })
 	.then(() => {
 		const app = express();
-		app.use("/api", route);
+		app.use("/", route);
 
 		app.listen(port, () => {
 			console.log("server has started");
