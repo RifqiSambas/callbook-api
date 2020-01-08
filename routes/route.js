@@ -25,7 +25,8 @@ router
 					title: req.body.title,
 					author: req.body.author,
 					link_book: req.body.link_book,
-					link_author: req.body.link_author
+					link_author: req.body.link_author,
+					image: req.body.image
 				});
 				await book.save();
 				res.status(200).send({message: "berhasil menambah data buku"});
@@ -43,14 +44,18 @@ router
 				book.title = req.body.title
 			}
 			if (req.body.author) {
-				book.content = req.body.author
+				book.author = req.body.author
 			}
 			if (req.body.link_author) {
-				book.content = req.body.author
+				book.link_book = req.body.link_book
 			}
 			if (req.body.link_book) {
-				book.content = req.body.author
+				book.link_author = req.body.link_author
 			}
+			if (req.body.link_book) {
+				book.image = req.body.image
+			}
+
 
 			await book.save()
 			res.send(book)
