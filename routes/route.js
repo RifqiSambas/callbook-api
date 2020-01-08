@@ -4,7 +4,7 @@ const Book = require("../models/book");
 const path = require("path");
 
 router
-	.get("/book", async(req, res) => {
+	.get("/book", async (req, res) => {
 		const books = await Book.find();
 		res.send(books);
 	})
@@ -19,7 +19,7 @@ router
 		}
 	})
 
-	.post("/book", async(req, res) => {
+	.post("/book", async (req, res) => {
 		const book = new Book({
 			title: req.body.title,
 			author: req.body.author,
@@ -28,6 +28,17 @@ router
 		});
 		await book.save();
 		res.send(book);
+	})
+
+	.delete("/book", async (req, res) => {
+		try{
+			await Book.deleteOne({ _id: req.params.id });
+			res.status(204).send();
+		}
+		catch{
+			res.status(404);
+			res.send({error: "Buku tidak ditemukan" });
+		}
 	})
 
 module.exports = router;

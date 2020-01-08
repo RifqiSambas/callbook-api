@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const route = require("./routes/route");
 const port = process.env.PORT || 8080;
-const bodyParser = require('body-parser');
 
 mongoose
 	.connect(
@@ -10,7 +9,7 @@ mongoose
 		{ useNewUrlParser: true })
 	.then(() => {
 		const app = express();
-		app.use(bodyParser.json());
+		app.use(express.json());
 		
 		app.get("/", async(req, res) => {
 			res.sendFile("index.html", {'root': './docs'});
