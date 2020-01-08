@@ -1,6 +1,6 @@
 const response = require('./respone');
 const config = require('../config/connection');
-const Book = require('../model/');
+const Book = require('../models/book');
 
 const get = (req, res) => {
 	Book.find({}, (err, book){
