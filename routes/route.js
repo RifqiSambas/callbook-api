@@ -6,7 +6,7 @@ const path = require("path");
 router
 	.get("/book", async (req, res) => {
 		const books = await Book.find();
-		res.status(200).send({message: "behasil menambah data"});
+		res.status(200).send(book);
 	})
 
 	.get("/book/:id", async (req, res) => {
