@@ -6,7 +6,7 @@ const path = require("path");
 router
 	.get("/book", async (req, res) => {
 		const books = await Book.find();
-		res.status(200).send(books);
+		res.status(200).send({message: "behasil menambah data"});
 	})
 
 	.get("/book/:id", async (req, res) => {
@@ -55,7 +55,7 @@ router
 			await book.save()
 			res.send(book)
 		} catch {
-			res.status(404).send({ error: "Post doesn't exist!" })
+			res.status(404).send({ error: "gagal memperbarui buku" })
 		}
 	})
 
