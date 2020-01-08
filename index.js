@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const route = require("./routes/route");
 const port = process.env.PORT || 8080;
+const bodyParser = require('bodyParser');
 
 mongoose
 	.connect(
