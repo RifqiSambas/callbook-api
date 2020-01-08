@@ -30,7 +30,7 @@ router
 		res.send(book);
 	})
 
-	.delete("/book", async (req, res) => {
+	.delete("/book/:id", async (req, res) => {
 		try{
 			await Book.deleteOne({ _id: req.params.id });
 			res.status(204).send();
