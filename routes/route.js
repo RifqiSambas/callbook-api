@@ -9,6 +9,16 @@ router
 		res.send(books);
 	})
 
+	.get("/book/:id", async (req, res) => {
+		try {
+			const book = await Book.findOne({ _id: req.params.id })
+			res.send(book);
+		} catch {
+			res.status(404);
+			res.send({error : 'buku tidak ditemukan'});
+		}
+	})
+
 	.post("/book", async(req, res) => {
 		const book = new Book({
 			title: req.body.title,
