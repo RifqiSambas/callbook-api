@@ -6,7 +6,9 @@ const path = require("path");
 router
 	.get("/book", async (req, res) => {
 		const books = await Book.find();
-		res.send(books);
+		res
+			.status(200)
+			.send(books);
 	})
 
 	.get("/book/:id", async (req, res) => {
@@ -14,50 +16,59 @@ router
 			const book = await Book.findOne({ _id: req.params.id })
 			res.send(book);
 		} catch {
-			res.status(404);
+			res.status(404)
 			res.send({error : 'buku tidak ditemukan'});
 		}
 	})
 
 	.post("/book", async (req, res) => {
-		const book = new Book({
-			title: req.body.title,
-			author: req.body.author,
-			link_book: req.body.link_book,
-			link_author: req.body.link_author
-		});
-		await book.save();
-		res.send(book);
+		try{
+			const book = new Book({
+				title: req.body.title,
+				author: req.body.author,
+				link_book: req.body.link_book,
+				link_author: req.body.link_author
+			});
+			await book.save();
+			res
+				.status(200)
+				.send({message: "berhasil menambah data buku"});
+		} catch {
+			res
+				.status(404)
+				.send("gagal menambah data buku")
+		}
+	})
+
+	.put("/book/:id", async (req, res) => {
+		let id = { _id: req.params.id };
+		var data = {
+			title : req.body.title,
+			author : req.body.author,
+			link_author : req.body.link_author,
+			link_book : req.body.link_book
+		};
+	 
+		Book.findByIdAndUpdate(
+			id, 
+			data, 
+			(err, book) => {
+				if (err) throw err;
+				res.send('Sukses, Book berhasil di update - '+book.title);
+			}
+		);
 	})
 
 	.delete("/book/:id", async (req, res) => {
 		try{
 			await Book.deleteOne({ _id: req.params.id });
-			res.status(204).send();
+			res
+				.status(204)
+				.send({message: "data buku berhasil dihapus"});
 		} catch{
-			res.status(404);
-			res.send({error: "Buku tidak ditemukan" });
-		}
-	})
-
-	.patch("/book/:id", async (req, res) => {
-		try{
-			const book = await Book.findOne({ _id: req.params.id });
-
-			if(req.body.title)
-				book.title = req.body.title
-			if(req.body.author)
-				book.author = req.body.author
-			if(req.body.link_book)
-				book.link_book = req.body.link_book
-			if(req.body.link_author)
-				book.link_author = req.body.link_author
-
-			await book.save();
-			res.sed(book);
-		} catch{
-			res.status(404);
-			res.send({error: "Buku tidak ditemukan"});
+			res
+				.status(404)
+				.send({error: "gagal menghapus data buku" });
 		}
 	})
 
