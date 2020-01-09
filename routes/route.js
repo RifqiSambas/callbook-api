@@ -20,10 +20,12 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.header.key == "benar"){
+			if(req.header.key != "benar"){
+				res.status(401).send({error: 'api key salah'});
+			}else{
 				if(req.body){
 					const book = new Book({
-						Title: req.body.title,
+						title: req.body.title,
 						author: req.body.author,
 						link_book: req.body.link_book,
 						link_author: req.body.link_author,
