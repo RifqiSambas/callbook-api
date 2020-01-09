@@ -20,7 +20,7 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.body != {}){
+			if(req.body){
 					const book = new Book({
 					Title: req.body.title,
 					author: req.body.author,
@@ -28,13 +28,8 @@ router
 					link_author: req.body.link_author,
 					image: req.body.image
 				});
-				if(book == {}){
-					res.status(400).send({message: "gagal menambah data buku"});
-				}
-				else{
-					await book.save();
-					res.status(200).send({message: "berhasil menambah data buku"});
-				}
+				await book.save();
+				res.status(200).send({message: "berhasil menambah data buku"});
 			}
 		} catch {
 			res.status(404).send("gagal menambah data buku")
@@ -57,13 +52,12 @@ router
 			if (req.body.link_book) {
 				book.link_author = req.body.link_author
 			}
-			if (req.body.link_book) {
+			if (req.body.image) {
 				book.image = req.body.image
 			}
 
-
 			await book.save()
-			res.send(book)
+			res.status(200).send({message: "berhasil memperbarui buku"})
 		} catch {
 			res.status(404).send({ error: "gagal memperbarui buku" })
 		}
