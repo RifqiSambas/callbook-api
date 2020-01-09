@@ -3,6 +3,15 @@ const router = express.Router();
 const Book = require("../models/book");
 const path = require("path");
 
+const checkApiKey = key => {
+	if(key != "dgcxk23781999123xj"){
+		return false;
+	}
+	else{
+		return true;
+	}
+};
+
 router
 	.get("/book", async (req, res) => {
 		const books = await Book.find();
@@ -20,7 +29,7 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.header.key != "benar"){
+			if(!checkApiKey(req.header.key)){
 				res.status(401).send({error: 'api key salah'});
 			}else{
 				if(req.body){
@@ -42,26 +51,31 @@ router
 
 	router.put("/book/:id", async (req, res) => {
 		try {
-			const book = await Book.findOne({ _id: req.params.id })
+			if(!checkApiKey(req.header.key)){
+				res.status(401).send({error: 'api key salah'});
+			}
+			else {
+				const book = await Book.findOne({ _id: req.params.id })
 
-			if (req.body.title) {
-				book.title = req.body.title
-			}
-			if (req.body.author) {
-				book.author = req.body.author
-			}
-			if (req.body.link_author) {
-				book.link_book = req.body.link_book
-			}
-			if (req.body.link_book) {
-				book.link_author = req.body.link_author
-			}
-			if (req.body.image) {
-				book.image = req.body.image
-			}
+				if (req.body.title) {
+					book.title = req.body.title
+				}
+				if (req.body.author) {
+					book.author = req.body.author
+				}
+				if (req.body.link_author) {
+					book.link_book = req.body.link_book
+				}
+				if (req.body.link_book) {
+					book.link_author = req.body.link_author
+				}
+				if (req.body.image) {
+					book.image = req.body.image
+				}
 
-			await book.save()
-			res.status(200).send({message: "berhasil memperbarui buku"})
+				await book.save()
+				res.status(200).send({message: "berhasil memperbarui buku"})
+			}
 		} catch {
 			res.status(404).send({ error: "gagal memperbarui buku" })
 		}
@@ -69,8 +83,12 @@ router
 
 	.delete("/book/:id", async (req, res) => {
 		try{
-			await Book.deleteOne({ _id: req.params.id });
-			res.status(204).send({message: "data buku berhasil dihapus"});
+			if(!checkApiKey(req.header.key)){
+				res.status(401).send({error: "api key salah"});
+			}else{
+				await Book.deleteOne({ _id: req.params.id });
+				res.status(204).send({message: "data buku berhasil dihapus"});
+			}
 		} catch{
 			res.status(404).send({error: "gagal menghapus data buku" });
 		}
