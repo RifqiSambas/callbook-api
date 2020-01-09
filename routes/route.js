@@ -20,16 +20,21 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.body){
+			if(req.body != {}){
 					const book = new Book({
-					title: req.body.title,
+					Title: req.body.title,
 					author: req.body.author,
 					link_book: req.body.link_book,
 					link_author: req.body.link_author,
 					image: req.body.image
 				});
-				await book.save();
-				res.status(200).send({message: "berhasil menambah data buku"});
+				if(book == {}){
+					res.status(400).send({message: "gagal menambah data buku"});
+				}
+				else{
+					await book.save();
+					res.status(200).send({message: "berhasil menambah data buku"});
+				}
 			}
 		} catch {
 			res.status(404).send("gagal menambah data buku")
