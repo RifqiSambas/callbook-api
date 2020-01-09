@@ -20,7 +20,7 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.header.key != apikey){
+			if(req.header.key != dgcxk23781999123xj){
 				res.status(401).send({error: 'api key salah'});
 			}else{
 				if(req.body){
@@ -42,7 +42,7 @@ router
 
 	router.put("/book/:id", async (req, res) => {
 		try {
-			if(req.header.key != apikey){
+			if(req.header.key != dgcxk23781999123xj){
 				res.status(401).send({error: 'api key salah'});
 			}
 			else {
@@ -74,7 +74,7 @@ router
 
 	.delete("/book/:id", async (req, res) => {
 		try{
-			if(req.header.key != apikey){
+			if(req.header.key != dgcxk23781999123xj){
 				res.status(401).send({error: "api key salah"});
 			}else{
 				await Book.deleteOne({ _id: req.params.id });
