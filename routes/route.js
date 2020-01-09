@@ -20,7 +20,7 @@ router
 
 	.post("/book", async (req, res) => {
 		try{
-			if(req.header.key == "dgcxk23781999123xji"){
+			if(req.header.key != "dgcxk23781999123xji"){
 				res.status(401).send({error: 'api key salah'});
 			}else{
 				if(req.body){
